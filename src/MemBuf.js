@@ -18,5 +18,7 @@ class MemBufFile {
                 new MemBuf()
             )
         }
+
+        this.memUf = new Uf // UF que representa a memória
     }
 }

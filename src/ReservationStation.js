@@ -11,9 +11,10 @@ class ReservationStation {
 }
 
 class ReservationStationFile {
-    constructor(size, ops) {
+    constructor(size, ops, nUfs) {
         this.size = size // numero de RS
         this.ops = ops // array de strings com as operações suportadas
+        this.nUfs = nUfs // Número de UFs ligadas a essas RSs
         
         this.reservationStations = []
         for (let i=0; i<size; i++){
@@ -21,6 +22,17 @@ class ReservationStationFile {
                 new ReservationStation()
             )
         }
+
+        this.Ufs = []
+        for (let i=0; i<nUfs; i++){
+            this.Ufs.push(
+                new Uf()
+            )
+        }
+    }
+
+    availableRS = () => {
+        
     }
 }
 
