@@ -1,7 +1,9 @@
 class Inst {
-    constructor (op, fields){
+    constructor (op, i, j, k){
         this.op = op // Código de operação
-        this.fields = fields // Valor dos campos, primeiro sempre é destiantion, se houver
+        this.i = i //Campo destino
+        this.j = j //Campo origem 1
+        this.k = k //Campo origem 2
     }
 
     is = (time) => {
