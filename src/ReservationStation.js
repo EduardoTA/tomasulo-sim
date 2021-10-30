@@ -37,8 +37,37 @@ class ReservationStation {
     //     if (wbTime <= 0) return true
     //     return false
     // }
-    putIntoRS = (inst, regFile) => {
-
+    
+    // Envia a instrução inst para a Reservation Station
+    putIntoRS = (regFile) => {
+        let Ri = regFile.regs.find(element => element.name === this.inst.i)
+        let Rj = regFile.regs.find(element => element.name === this.inst.j)
+        let Rk = regFile.regs.find(element => element.name === this.inst.k)
+        if (!Rj) {
+            this.vj = this.inst.j // Argumento j é immediate
+            this.Qj = null
+        } else {
+            if (!(Rj.Qi)) {
+                this.vj = Rj.v
+                this.Qj = null
+            } else {
+                this.Qj = Rj.Qi
+            }
+        }
+        if (!Rk) {
+            this.vk = this.inst.k  // Argumento k é immediate
+            this.Qk = null
+        } else {
+            if (!(Rk.Qi)) {
+                this.vk = Rk.v
+                this.Qk = null
+            } else {
+                this.Qk = Rk.Qi
+            }
+        }
+        if (Ri) {
+            Ri.Qi = this
+        }
     }
 }
 
@@ -46,6 +75,9 @@ class MemReservationStation extends ReservationStation {
     constructor(ReservationStationFile) {
         super(ReservationStationFile)
         this.address;
+    }
+    putIntoRS = (regFile) => {
+        // TODO: Implementar este método para este tipo de classe
     }
 }
 
@@ -118,13 +150,6 @@ class ReservationStationFile {
     //     this.reservationStations[rsIndex].busy = true;
     //     //TODO: atualiza variáveis da RS
     //     this.rsIssue.push(this.reservationStations[rsIndex]);
-    // }
-
-    // availableRS = () => {
-    //     for (let i = 0; i < this.reservationStations.length; i++) {
-    //         if (this.reservationStations[i].busy == false) return i;
-    //     }
-    //     return null;
     // }
 }
 
