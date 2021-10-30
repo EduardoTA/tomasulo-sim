@@ -23,6 +23,7 @@ let loadStoreReservationStationFile = new ReservationStationFile(2, loadStoreIns
 
 let t = 0 // Tempo
 
+//Função que retorna qual RS File usar, baseada no op
 let useThisRSFile = (op) => {
     if (arithReservationStationFile.ops.some(
         element => element == op
@@ -37,8 +38,9 @@ let useThisRSFile = (op) => {
     }
 }
 
+// Executado no carregamento da página
 window.onload = () => {
-    while (false) { // TODO: Condição de parada
+    while (t < 1000) { // TODO: Condição de parada
         if (instList.length > 0) { // Se houver instrução a ser issued
             let inst = instList[0]
             let op = inst.op
@@ -47,6 +49,7 @@ window.onload = () => {
             if (reservationStationFile.issue(inst))
                 instList.shift() // Remove primeiro elemento da lista de instruções se puder dar issue
         }
+        t++
     }
 }
 

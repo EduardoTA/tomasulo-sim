@@ -1,10 +1,11 @@
 class Inst {
-    constructor (op, i, j, k, tempoExec){
+    constructor (op, i, j, k, issueTime, execTime){
         this.op = op // Código de operação
         this.i = i //Campo destino
         this.j = j //Campo origem 1
         this.k = k //Campo origem 2
-        this.tempoExec = tempoExec;
+        this.issueTime = issueTime
+        this.execTime = execTime
     }
 
     is = (time) => {
