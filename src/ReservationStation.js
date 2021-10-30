@@ -1,5 +1,5 @@
 class ReservationStation {
-    constructor() {
+    constructor(ReservationStationFile) {
         // Enum com valores de códigos de status
         this.statusCodes = {
             BUSY: "busy",
@@ -9,6 +9,8 @@ class ReservationStation {
         }
 
         this.inst; //referencia Inst
+        this.ReservationStationFile = ReservationStationFile // Referencia ao file correspondente
+
         this.status = this.statusCodes.IDLE // Código de status da RS
         this.op; //string
         this.vj; //string
@@ -22,24 +24,27 @@ class ReservationStation {
     }
 
     finishedIssue = () => {
-        if (issueTime <= 0) return true
+        if (issueTime <= 0) {
+            this.status = this.statusCodes.BUSY
+            return true
+        }
         return false
     }
 
-    finishedExec = () => {
-        if (execTime <= 0) return true
-        return false
-    }
+    // finishedExec = () => {
+    //     if (execTime <= 0) return true
+    //     return false
+    // }
 
-    finishedWb = () => {
-        if (wbTime <= 0) return true
-        return false
-    }
+    // finishedWb = () => {
+    //     if (wbTime <= 0) return true
+    //     return false
+    // }
 }
 
 class MemReservationStation extends ReservationStation {
-    constructor() {
-        super()
+    constructor(ReservationStationFile) {
+        super(ReservationStationFile)
         this.address;
     }
 }
@@ -69,94 +74,93 @@ class ReservationStationFile {
         this.rsWaitWB = [];
     }
 
+    // Instancia o número de RSs corretas
     instanciateRSs = () => {
         for (let i=0; i<this.nRSs; i++){
             this.reservationStations.push(
-                new ReservationStation()
+                new ReservationStation(this)
             )
         }
     }
 
-    iterar = () => {
-        for (let rs in this.rsWaitWB) { //TODO: Implementar espera por CDB e ordem de instruções
-            rs.tempoWb--;
-            if (rs.tempoWb < 0) {
-                rs.busy = false; //TODO: Reinicializar parametros restantes da RS
-            }
-        }
+    // iterar = () => {
+    //     for (let rs in this.rsWaitWB) { //TODO: Implementar espera por CDB e ordem de instruções
+    //         rs.tempoWb--;
+    //         if (rs.tempoWb < 0) {
+    //             rs.busy = false; //TODO: Reinicializar parametros restantes da RS
+    //         }
+    //     }
 
-        for (let rs in this.rsExecuting) {
-            rs.tempoExec--;
-            if (rs.tempoExec < 0) this.rsWaitWB.push(rs);
-        }
-        this.rsExecuting = this.rsExecuting.filter(rs => rs.tempoExec >= 0);
+    //     for (let rs in this.rsExecuting) {
+    //         rs.tempoExec--;
+    //         if (rs.tempoExec < 0) this.rsWaitWB.push(rs);
+    //     }
+    //     this.rsExecuting = this.rsExecuting.filter(rs => rs.tempoExec >= 0);
 
-        while (this.rsExecuting.length < this.nUfs) {
-            if (this.rsQueue[0] && this.rsQueue[0].tempoIssue === 0) {
-                let rs = this.rsQueue.shift();
-                this.rsExecuting.push(rs);
-            } else break;
-        }
+    //     while (this.rsExecuting.length < this.nUfs) {
+    //         if (this.rsQueue[0] && this.rsQueue[0].tempoIssue === 0) {
+    //             let rs = this.rsQueue.shift();
+    //             this.rsExecuting.push(rs);
+    //         } else break;
+    //     }
 
-        for (let rs in this.rsIssue) {
-            rs.tempoIssue--;
-        }
-        this.rsIssue = this.rsIssue.filter(rs => rs.tempoIssue >= 0);
-    }
+    //     for (let rs in this.rsIssue) {
+    //         rs.tempoIssue--;
+    //     }
+    //     this.rsIssue = this.rsIssue.filter(rs => rs.tempoIssue >= 0);
+    // }
 
-    issue = (inst) => {
-        let rsIndex = this.availableRS();
-        if (rsIndex === null) return false; // Não há Reservation Stations disponíveis
-        this.rsQueue.push(rsIndex);
-        this.reservationStations[rsIndex].inst = inst;
-        this.reservationStations[rsIndex].busy = true;
-        //TODO: atualiza variáveis da RS
-        this.rsIssue.push(this.reservationStations[rsIndex]);
-    }
+    // issue = (inst) => {
+    //     let rsIndex = this.availableRS();
+    //     if (rsIndex === null) return false; // Não há Reservation Stations disponíveis
+    //     this.rsQueue.push(rsIndex);
+    //     this.reservationStations[rsIndex].inst = inst;
+    //     this.reservationStations[rsIndex].busy = true;
+    //     //TODO: atualiza variáveis da RS
+    //     this.rsIssue.push(this.reservationStations[rsIndex]);
+    // }
 
-    availableRS = () => {
-        for (let i = 0; i < this.reservationStations.length; i++) {
-            if (this.reservationStations[i].busy == false) return i;
-        }
-        return null;
-    }
+    // availableRS = () => {
+    //     for (let i = 0; i < this.reservationStations.length; i++) {
+    //         if (this.reservationStations[i].busy == false) return i;
+    //     }
+    //     return null;
+    // }
 
-    putIntoRS = (inst, regFile) => {
-        let rs = reservationStations.find(element => element.status === "idle")
+    // Método para colocar em uma RS livre uma instrução
+    // putIntoRS = (inst, regFile) => {
+    //     // Encontra a primeira RS livre
+    //     let rs = reservationStations.find(element => element.status === "idle")
 
-        if (rs) {
-            rs.inst = inst
-            rs.status = this.statusCodes.AWAITING_ISSUE // Código de status da RS
-            rs.op = inst.op
+    //     if (rs) {
+    //         rs.inst = inst
+    //         rs.status = this.statusCodes.AWAITING_ISSUE // Código de status da RS
+    //         rs.op = inst.op
 
-            rs.issueTime = inst.issueTime
-            rs.execTime = inst.execTime
-            rs.wbTime = inst.wbTime
+    //         rs.issueTime = inst.issueTime
+    //         rs.execTime = inst.execTime
+    //         rs.wbTime = inst.wbTime
             
-            Rj = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento j
-            Rk = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento k
+    //         Rj = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento j
+    //         Rk = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento k
             
-            if (!Rj)
-                rs.vj = inst.j
-            else {
-                if (!Rj.Qi)
-                    rs.vj = Rj.v
-            }
-            if (!Rk)
-                rs.vk = inst.k
-            
+    //         if (!Rj) // Se não for encontrado registrador, então era imediato
+    //             rs.vj = inst.j
+    //         else {
+    //             // TODO tratamento caso seja encontrado regitrador
+    //         }
+    //         if (!Rk) // Se não for encontrado registrador, então era imediato
+    //             rs.vk = inst.k
+    //         else {
+    //             // TODO tratamento caso seja encontrado regitrador
+    //         }
 
-            if (inst.j)
-            rs.vj
-            rs.vk
-            rs.Qj
-            rs.Qk
-
-            
-        } else {
-            return null
-        }
-    }
+    //         return rs
+    //     } else {
+    //         // Se não houver RS livre
+    //         return null
+    //     }
+    // }
 }
 
 class MemReservationStationFile extends ReservationStationFile {
@@ -168,7 +172,7 @@ class MemReservationStationFile extends ReservationStationFile {
     instanciateRSs = () => {
         for (let i=0; i<this.nRSs; i++){
             this.reservationStations.push(
-                new MemReservationStation()
+                new MemReservationStation(this)
             )
         }
     }
