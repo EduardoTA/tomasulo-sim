@@ -15,9 +15,25 @@ class ReservationStation {
         this.vk; //string
         this.Qj; //referencia ReservationStation
         this.Qk; //referencia ReservationStation
-        this.tempoExec = 4;
-        this.tempoIssue = 3;
-        this.tempoWb = 1;
+
+        this.issueTime
+        this.execTime
+        this.wbTime
+    }
+
+    finishedIssue = () => {
+        if (issueTime <= 0) return true
+        return false
+    }
+
+    finishedExec = () => {
+        if (execTime <= 0) return true
+        return false
+    }
+
+    finishedWb = () => {
+        if (wbTime <= 0) return true
+        return false
     }
 }
 
@@ -103,6 +119,43 @@ class ReservationStationFile {
             if (this.reservationStations[i].busy == false) return i;
         }
         return null;
+    }
+
+    putIntoRS = (inst, regFile) => {
+        let rs = reservationStations.find(element => element.status === "idle")
+
+        if (rs) {
+            rs.inst = inst
+            rs.status = this.statusCodes.AWAITING_ISSUE // Código de status da RS
+            rs.op = inst.op
+
+            rs.issueTime = inst.issueTime
+            rs.execTime = inst.execTime
+            rs.wbTime = inst.wbTime
+            
+            Rj = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento j
+            Rk = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento k
+            
+            if (!Rj)
+                rs.vj = inst.j
+            else {
+                if (!Rj.Qi)
+                    rs.vj = Rj.v
+            }
+            if (!Rk)
+                rs.vk = inst.k
+            
+
+            if (inst.j)
+            rs.vj
+            rs.vk
+            rs.Qj
+            rs.Qk
+
+            
+        } else {
+            return null
+        }
     }
 }
 
