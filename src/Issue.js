@@ -4,8 +4,8 @@ class Issue {
         this.busy = false
         this.time = 0
     }
-    // iterate = () => {
-    //     this.time += 1
+    iterate = () => {
+        this.time += 1
 
-    // }
+    }
 }

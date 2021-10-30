@@ -1,7 +1,14 @@
 class ReservationStation {
     constructor() {
+        this.statusCodes = {
+            BUSY: "busy",
+            IDLE: "idle",
+            AWAITING_ISSUE: "awaiting issue",
+            AWAITING_WB: "awaiting writeback"
+        }
+
         this.inst; //referencia Inst
-        this.busy = false; //boolean
+        this.status = this.statusCodes.IDLE // Enum
         this.op; //string
         this.vj; //string
         this.vk; //string
