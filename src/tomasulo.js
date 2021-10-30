@@ -38,7 +38,7 @@ let useThisRSFile = (op) => {
 }
 
 window.onload = () => {
-    while (true) { // TODO: Condição de parada
+    while (false) { // TODO: Condição de parada
         if (instList.length > 0) { // Se houver instrução a ser issued
             let inst = instList[0]
             let op = inst.op

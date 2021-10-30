@@ -1,5 +1,6 @@
 class ReservationStation {
     constructor() {
+        // Enum com valores de códigos de status
         this.statusCodes = {
             BUSY: "busy",
             IDLE: "idle",
@@ -8,7 +9,7 @@ class ReservationStation {
         }
 
         this.inst; //referencia Inst
-        this.status = this.statusCodes.IDLE // Enum
+        this.status = this.statusCodes.IDLE // Código de status da RS
         this.op; //string
         this.vj; //string
         this.vk; //string
@@ -20,18 +21,24 @@ class ReservationStation {
     }
 }
 
+class MemReservationStation extends ReservationStation {
+    constructor() {
+        super()
+        this.address;
+    }
+}
+
 class ReservationStationFile {
-    constructor(size, ops, nUfs) {
-        this.size = size // numero de RS
+    constructor(nRSs, ops, nUfs) {
+        this.nRSs = nRSs // numero de RS
         this.ops = ops // array de strings com as operações suportadas
         this.nUfs = nUfs // Número de UFs ligadas a essas RSs
 
         this.reservationStations = []
-        for (let i=0; i<size; i++){
-            this.reservationStations.push(
-                new ReservationStation()
-            )
-        }
+        
+        // Se o objeto instanciado for a superclasse, então chamar método da superclasse
+        if (new.target === ReservationStationFile)
+            this.instanciateRSs()
 
         // this.Ufs = []
         // for (let i=0; i<nUfs; i++){
@@ -44,6 +51,14 @@ class ReservationStationFile {
         this.rsIssue = [];
         this.rsExecuting = [];
         this.rsWaitWB = [];
+    }
+
+    instanciateRSs = () => {
+        for (let i=0; i<this.nRSs; i++){
+            this.reservationStations.push(
+                new ReservationStation()
+            )
+        }
     }
 
     iterar = () => {
@@ -74,7 +89,7 @@ class ReservationStationFile {
     }
 
     issue = (inst) => {
-        let rsIndex = availableRS();
+        let rsIndex = this.availableRS();
         if (rsIndex === null) return false; // Não há Reservation Stations disponíveis
         this.rsQueue.push(rsIndex);
         this.reservationStations[rsIndex].inst = inst;
@@ -91,4 +106,17 @@ class ReservationStationFile {
     }
 }
 
+class MemReservationStationFile extends ReservationStationFile {
+    constructor(nRSs, ops) {
+        super(nRSs, ops, 1) // Número de UFs obrigatoriamente 1
+        this.instanciateRSs()
+    }
 
+    instanciateRSs = () => {
+        for (let i=0; i<this.nRSs; i++){
+            this.reservationStations.push(
+                new MemReservationStation()
+            )
+        }
+    }
+}
