@@ -18,28 +18,28 @@ class ReservationStation {
         this.Qj; //referencia ReservationStation
         this.Qk; //referencia ReservationStation
 
-        this.issueTime
-        this.execTime
-        this.wbTime
+        this.issueTime = 0
+        this.execTime = 0
+        this.wbTime = 0
     }
-
     finishedIssue = () => {
-        if (issueTime <= 0) {
+        if (this.issueTime <= 0) {
             this.status = this.statusCodes.BUSY
             return true
         }
         return false
     }
-
     // finishedExec = () => {
     //     if (execTime <= 0) return true
     //     return false
     // }
-
     // finishedWb = () => {
     //     if (wbTime <= 0) return true
     //     return false
     // }
+    putIntoRS = (inst, regFile) => {
+
+    }
 }
 
 class MemReservationStation extends ReservationStation {
@@ -56,7 +56,7 @@ class ReservationStationFile {
         this.nUfs = nUfs // Número de UFs ligadas a essas RSs
 
         this.reservationStations = []
-        
+
         // Se o objeto instanciado for a superclasse, então chamar método da superclasse
         if (new.target === ReservationStationFile)
             this.instanciateRSs()
@@ -126,46 +126,11 @@ class ReservationStationFile {
     //     }
     //     return null;
     // }
-
-    // Método para colocar em uma RS livre uma instrução
-    // putIntoRS = (inst, regFile) => {
-    //     // Encontra a primeira RS livre
-    //     let rs = reservationStations.find(element => element.status === "idle")
-
-    //     if (rs) {
-    //         rs.inst = inst
-    //         rs.status = this.statusCodes.AWAITING_ISSUE // Código de status da RS
-    //         rs.op = inst.op
-
-    //         rs.issueTime = inst.issueTime
-    //         rs.execTime = inst.execTime
-    //         rs.wbTime = inst.wbTime
-            
-    //         Rj = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento j
-    //         Rk = regFile.find(element => element.name === inst.j) // Encontra registrador do argumento k
-            
-    //         if (!Rj) // Se não for encontrado registrador, então era imediato
-    //             rs.vj = inst.j
-    //         else {
-    //             // TODO tratamento caso seja encontrado regitrador
-    //         }
-    //         if (!Rk) // Se não for encontrado registrador, então era imediato
-    //             rs.vk = inst.k
-    //         else {
-    //             // TODO tratamento caso seja encontrado regitrador
-    //         }
-
-    //         return rs
-    //     } else {
-    //         // Se não houver RS livre
-    //         return null
-    //     }
-    // }
 }
 
 class MemReservationStationFile extends ReservationStationFile {
-    constructor(nRSs, ops) {
-        super(nRSs, ops, 1) // Número de UFs obrigatoriamente 1
+    constructor(nRSs, ops, regFile) {
+        super(nRSs, ops, 1, regFile) // Número de UFs obrigatoriamente 1
         this.instanciateRSs()
     }
 

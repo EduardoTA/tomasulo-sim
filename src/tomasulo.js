@@ -1,8 +1,8 @@
 let instList = [
-    new Inst("add", "R0", "R1", "R2"),
-    new Inst("slti", "R3", "R2", "0"),
-    new Inst("slt", "R4", "R0", "R1"),
-    new Inst("bne", "3", "R3", "R4") // Instrução de branch ajustada para registradores de source ficarem em j e k
+    new Inst("add", "R0", "R1", "R2", 3),
+    new Inst("slti", "R3", "R2", "0", 3),
+    new Inst("slt", "R4", "R0", "R1", 3),
+    new Inst("bne", "3", "R3", "R4", 3) // Instrução de branch ajustada para registradores de source ficarem em j e k
 ]
 let arithInstList = [
     "auipc",
@@ -19,12 +19,12 @@ let loadStoreInstList = [
     "lw"
 ]
 
+let regFile = new RegisterFile (32)
+
 let instUnit = new InstUnit (instList)
 let arithReservationStationFile = new ReservationStationFile(3, arithInstList, 2)
 let loadStoreReservationStationFile = new ReservationStationFile(2, loadStoreInstList, 1)
-let issueUnit = new IssueUnit (instUnit, [arithReservationStationFile, loadStoreReservationStationFile])
-
-let regFile = new RegisterFile (32)
+let issueUnit = new IssueUnit (instUnit, [arithReservationStationFile, loadStoreReservationStationFile], regFile)
 
 let t = 0 // Tempo
 
@@ -86,6 +86,7 @@ window.onload = () => {
     // let IssueRS // Reservation station sendo issued ciclo atual
 
     while (t < 1000) { // TODO: Condição de parada
+        issueUnit.iterate()
         // oldIssueRS = IssueRS
         // IssueRS = issueIterate(oldIssueRS, readyToBeExec)
         // execIterate(readyToBeExec)
