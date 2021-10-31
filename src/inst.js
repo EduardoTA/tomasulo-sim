@@ -8,5 +8,9 @@ class Inst {
         this.issueTime = issueTime
         this.execTime = execTime
         this.wbTime = wbTime
+
+        this.finishedIssue = 0
+        this.finishedExec = 0
+        this.finishedWb = 0
     }
 }

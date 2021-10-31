@@ -67,18 +67,20 @@ class IssueUnit {
         }
         return null
     }
-    iterate = () => {
+    iterate = (t) => {
         if (this.rs) {
             // Se houver instrução sendo issued,
             // Verificar se terminou, caso contrário decrementar o contador
             if (this.rs.finishedIssue()) {
                 this.finishedIssue.push(this.rs)
+                this.rs.inst.finishedIssue = t
                 this.rs.putIntoRS (this.regFile)
 
                 this.rs = null
+                this.iterate(t) // Para o tempo ficar certo
             } else {
                 this.rs.issueTime--
-            } 
+            }
         } else {
             // Se não houver instrução sendo issued, fazer fetch, se houver RS livre
             if (instUnit.fetchInst()) { // Verifica se existe instrução na queue
@@ -92,7 +94,8 @@ class IssueUnit {
                     this.rs = rs
                     this.rs.inst = inst
                     this.rs.issueTime = inst.issueTime
-                }
+                    this.iterate(t)  // Para o tempo ficar certo
+                }  
             }
         }
     }
