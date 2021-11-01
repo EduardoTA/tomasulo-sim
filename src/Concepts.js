@@ -52,8 +52,6 @@ class IssueUnit {
         this.instUnit = instUnit // Referência à Instruction Unit
         this.reservationStationFiles = reservationStationFiles // Array com as referências às reservation station files
         this.regFile = regFile // Referência ao register file
-
-        this.finishedIssue = [] // FIFO com as instruções/RSs que terminaram issue
     }
     // Encontra uma reservation station livre, dada a instrução
     findFreeRS = (inst) => {
@@ -72,7 +70,7 @@ class IssueUnit {
             // Se houver instrução sendo issued,
             // Verificar se terminou, caso contrário decrementar o contador
             if (this.rs.finishedIssue()) {
-                this.finishedIssue.push(this.rs)
+                this.rs.reservationStationFile.issue(this.rs)
                 this.rs.inst.finishedIssue = t
                 this.rs.putIntoRS (this.regFile)
 
@@ -98,8 +96,5 @@ class IssueUnit {
                 }  
             }
         }
-    }
-    issue = () => {
-        return this.finishedIssue.shift()
     }
 }

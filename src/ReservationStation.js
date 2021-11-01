@@ -1,5 +1,5 @@
 class ReservationStation {
-    constructor(ReservationStationFile) {
+    constructor(reservationStationFile) {
         // Enum com valores de códigos de status
         this.statusCodes = {
             BUSY: "busy",
@@ -9,7 +9,7 @@ class ReservationStation {
         }
 
         this.inst; //referencia Inst
-        this.ReservationStationFile = ReservationStationFile // Referencia ao file correspondente
+        this.reservationStationFile = reservationStationFile // Referencia ao file correspondente
 
         this.status = this.statusCodes.IDLE // Código de status da RS
         this.op; //string
@@ -104,6 +104,8 @@ class ReservationStationFile {
         this.rsIssue = [];
         this.rsExecuting = [];
         this.rsWaitWB = [];
+
+        this.finishedIssue = [] // FIFO com as instruções/RSs que terminaram issue
     }
 
     // Instancia o número de RSs corretas
@@ -113,6 +115,11 @@ class ReservationStationFile {
                 new ReservationStation(this)
             )
         }
+    }
+
+    // Insere nova RS na fila de RSs que acabaram de ser issued
+    issue = (reservationStation) => {
+        this.finishedIssue.push(reservationStation)
     }
 
     // iterar = () => {
