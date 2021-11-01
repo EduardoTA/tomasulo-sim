@@ -1,10 +1,10 @@
 class Inst {
-    constructor (op, i, j, k, issueTime, execTime, wbTime){
+    constructor (op, rd, rs1, rs2, imm, issueTime, execTime, wbTime){
         this.op = op // Código de operação
-        this.instClass = 
-        this.i = i //Campo destino
-        this.j = j //Campo origem 1
-        this.k = k //Campo origem 2
+        this.rd = rd // Campo destino
+        this.rs1 = rs1 // Campo origem 1
+        this.rs2 = rs2 // Campo origem 2
+        this.imm = imm // Campo Immediate
         this.issueTime = issueTime
         this.execTime = execTime
         this.wbTime = wbTime
