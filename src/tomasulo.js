@@ -1,9 +1,11 @@
+let regFile = new RegisterFile (32)
+
 let instList = [
     // (op, rd, rs1, rs2, imm, issueTime, execTime, wbTime)
-    new Inst("add", "R0", "R1", "R2", undefined, 1, 3, 1),
-    new Inst("slti", "R3", "R2", undefined, 2, 1, 2, 1),
-    new Inst("slt", "R4", "R0", "R1", undefined, 1, 3, 1),
-    new Inst("bne", undefined, "R3", "R4", 3, 1, 4, 1)
+    new Inst("add", "R0", "R1", "R2", undefined, 1, 3, 1, regFile),
+    new Inst("slti", "R3", "R2", undefined, 2, 1, 2, 1, regFile),
+    new Inst("slt", "R4", "R0", "R1", undefined, 1, 3, 1, regFile),
+    new Inst("bne", undefined, "R3", "R4", 3, 1, 4, 1, regFile)
 ]
 let arithInstList = [
     "auipc",
@@ -19,8 +21,6 @@ let loadStoreInstList = [
     "lui",
     "lw"
 ]
-
-let regFile = new RegisterFile (32)
 
 let instUnit = new InstUnit (instList)
 let arithReservationStationFile = new ReservationStationFile(3, arithInstList, 2)
