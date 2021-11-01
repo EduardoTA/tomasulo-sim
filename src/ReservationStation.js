@@ -1,5 +1,5 @@
 class ReservationStation {
-    constructor(ReservationStationFile) {
+    constructor(reservationStationFile) {
         // Enum com valores de códigos de status
         this.statusCodes = {
             BUSY: "busy",
@@ -9,7 +9,7 @@ class ReservationStation {
         }
 
         this.inst; //referencia Inst
-        this.ReservationStationFile = ReservationStationFile // Referencia ao file correspondente
+        this.reservationStationFile = reservationStationFile // Referencia ao file correspondente
 
         this.status = this.statusCodes.IDLE // Código de status da RS
         this.op; //string
