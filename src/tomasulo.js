@@ -1,8 +1,9 @@
 let instList = [
-    new Inst("add", "R0", "R1", "R2", 3),
-    new Inst("slti", "R3", "R2", "0", 3),
-    new Inst("slt", "R4", "R0", "R1", 3),
-    new Inst("bne", "3", "R3", "R4", 3) // Instrução de branch ajustada para registradores de source ficarem em j e k
+    // (op, rd, rs1, rs2, imm, issueTime, execTime, wbTime)
+    new Inst("add", "R0", "R1", "R2", undefined, 1, 3, 1),
+    new Inst("slti", "R3", "R2", undefined, 2, 1, 2, 1),
+    new Inst("slt", "R4", "R0", "R1", undefined, 1, 3, 1),
+    new Inst("bne", undefined, "R3", "R4", 3, 1, 4, 1)
 ]
 let arithInstList = [
     "auipc",
