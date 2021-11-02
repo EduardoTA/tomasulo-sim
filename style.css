@@ -95,6 +95,7 @@ textarea {
 	border: 2px solid #fd115c;
 	color: #eee;
 	margin-bottom: 20px;
+	resize: vertical;
 }
 
 textarea:focus {
