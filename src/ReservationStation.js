@@ -15,8 +15,8 @@ class ReservationStation {
         this.op; //string
         this.vj; //string
         this.vk; //string
-        this.Qj; //referencia ReservationStation
-        this.Qk; //referencia ReservationStation
+        this.qj; //referencia ReservationStation
+        this.qk; //referencia ReservationStation
 
         this.issueTime = 0
         this.execTime = 0
@@ -40,33 +40,21 @@ class ReservationStation {
     
     // Envia a instrução inst para a Reservation Station
     putIntoRS = (regFile) => {
-        let Ri = regFile.regs.find(element => element.name === this.inst.i)
-        let Rj = regFile.regs.find(element => element.name === this.inst.j)
-        let Rk = regFile.regs.find(element => element.name === this.inst.k)
-        if (!Rj) {
-            this.vj = this.inst.j // Argumento j é immediate
-            this.Qj = null
-        } else {
-            if (!(Rj.Qi)) {
-                this.vj = Rj.v
-                this.Qj = null
-            } else {
-                this.Qj = Rj.Qi
-            }
-        }
-        if (!Rk) {
-            this.vk = this.inst.k  // Argumento k é immediate
-            this.Qk = null
-        } else {
-            if (!(Rk.Qi)) {
-                this.vk = Rk.v
-                this.Qk = null
-            } else {
-                this.Qk = Rk.Qi
-            }
-        }
-        if (Ri) {
-            Ri.Qi = this
+        if (["addi", "slti", "sltiu", "xori", "ori", "andi", "slli", "srli", "srai"].includes(this.inst.op)) {
+            
+            this.qj = this.inst.rs1.Qi
+            if (!this.qj)
+                this.vj = this.inst.rs1.v
+            this.vk = this.inst.imm
+            this.inst.rd.Qi = this
+        } else if (["add", "sub", "sll", "slt", "sltu", "xor", "srl", "sra", "or", "and"].includes(this.inst.op)) {
+            this.qj = this.inst.rs1.Qi
+            if (!this.qj)
+                this.vj = this.inst.rs1.v
+            this.qk = this.inst.rs2.Qi
+            if (!this.qk)
+                this.vk = this.inst.rs2.v
+            this.inst.rd.Qi = this
         }
     }
 }
