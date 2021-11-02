@@ -136,3 +136,28 @@ class WbUnit {
         }
     }
 }
+
+// Unidade de Memória
+class MemUnit {
+    constructor (size) {
+        this.size = size
+        this.mem = {}
+        this.clean = true
+    }
+    load = (index) => {
+        if (index >= 0 && index < this.size) {
+            if (this.clean) {
+                this.mem[index] = 0
+                return 0
+            } else {
+                return this.mem[index]
+            }
+        }
+    }
+    store = (index, value) => {
+        if (index >= 0 && index < this.size) {
+            this.clean = false
+            this.mem[index] = value
+        }
+    }
+}
