@@ -7,7 +7,7 @@
     <title>Tomasulo Simulator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css"/>
     
 </head>
@@ -19,16 +19,57 @@
             <button id='run'>Run</button>
         </div>
         <br>
-        
-        <div class="grid-8">
-            <label for="instrucoes">Instruções</label>
-            <textarea name="instrucoes" id="instrucoes"></textarea>
-            <button id="applyBTN" >Apply</button>
+
+        <div class="grid">
+            <span class="tituloCat">Registradores</span>
+            <div><label for="R0">R0</label><input id="R0" type="number" name="R0" value="0"></div>
+            <div><label for="R1">R1</label><input id="R1" type="number" name="R1" value="0"></div>
+            <div><label for="R2">R2</label><input id="R2" type="number" name="R2" value="0"></div>
+            <div><label for="R3">R3</label><input id="R3" type="number" name="R3" value="0"></div>
+            <div><label for="R4">R4</label><input id="R4" type="number" name="R4" value="0"></div>
+            <div><label for="R5">R5</label><input id="R5" type="number" name="R5" value="0"></div>
+            <div><label for="R6">R6</label><input id="R6" type="number" name="R6" value="0"></div>
+            <div><label for="R7">R7</label><input id="R7" type="number" name="R7" value="0"></div>
+            <div><label for="R8">R8</label><input id="R8" type="number" name="R8" value="0"></div>
+            <div><label for="R9">R9</label><input id="R9" type="number" name="R9" value="0"></div>
+            <div><label for="R10">R10</label><input id="R10" type="number" name="R10" value="0"></div>
+            <div><label for="R11">R11</label><input id="R11" type="number" name="R11" value="0"></div>
+            <div><label for="R12">R12</label><input id="R12" type="number" name="R12" value="0"></div>
+            <div><label for="R13">R13</label><input id="R13" type="number" name="R13" value="0"></div>
+            <div><label for="R14">R14</label><input id="R14" type="number" name="R14" value="0"></div>
+            <div><label for="R15">R15</label><input id="R15" type="number" name="R15" value="0"></div>
+            <div><label for="R16">R16</label><input id="R16" type="number" name="R16" value="0"></div>
+            <div><label for="R17">R17</label><input id="R17" type="number" name="R17" value="0"></div>
+            <div><label for="R18">R18</label><input id="R18" type="number" name="R18" value="0"></div>
+            <div><label for="R19">R19</label><input id="R19" type="number" name="R19" value="0"></div>
+            <div><label for="R20">R20</label><input id="R20" type="number" name="R20" value="0"></div>
+            <div><label for="R21">R21</label><input id="R21" type="number" name="R21" value="0"></div>
+            <div><label for="R22">R22</label><input id="R22" type="number" name="R22" value="0"></div>
+            <div><label for="R23">R23</label><input id="R23" type="number" name="R23" value="0"></div>
+            <div><label for="R24">R24</label><input id="R24" type="number" name="R24" value="0"></div>
+            <div><label for="R25">R25</label><input id="R25" type="number" name="R25" value="0"></div>
+            <div><label for="R26">R26</label><input id="R26" type="number" name="R26" value="0"></div>
+            <div><label for="R27">R27</label><input id="R27" type="number" name="R27" value="0"></div>
+            <div><label for="R28">R28</label><input id="R28" type="number" name="R28" value="0"></div>
+            <div><label for="R29">R29</label><input id="R29" type="number" name="R29" value="0"></div>
+            <div><label for="R30">R30</label><input id="R30" type="number" name="R30" value="0"></div>
+            <div><label for="R31">R31</label><input id="R31" type="number" name="R31" value="0"></div>
         </div>
         
-        <table id="instInput">
-            
-        </table>
+        <label for="instrucoes" class="tituloCat">Instruções</label>
+        <textarea name="instrucoes" id="instrucoes"></textarea>
+        <button id="applyBTN">Apply</button>
+        <!-- <table id="instInput"> 
+        </table> -->
+    </div>
+
+    <footer>
+        <p>Escola Politécnica da USP</p>
+        <p>PCS3422 - Organização e Arquitetura de Computadores II (2021)</p>
+        <p>Grupo 12</p>
+        <p>Alguns direitos reservados</p>
+    </footer>
+
     </div>
     <script src="src/input.js"></script>
     <script src="src/inst.js"></script>
