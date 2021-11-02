@@ -1,8 +1,8 @@
 class Register {
     constructor(name) {
         this.name = name
-        this.Qi = null
-        this.v = undefined
+        this.Qi = 0
+        this.v = 0
     }
 }
 
