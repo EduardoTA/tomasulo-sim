@@ -17,7 +17,7 @@ body {
 	margin: 0 auto;
 	padding: 0px;
 	position: relative;
-	margin-bottom: 220px;
+	margin-bottom: 120px;
 }
 
 h1 {
@@ -25,7 +25,7 @@ h1 {
 	font-size: 3em;
 	font-family: "Montserrat", sans-serif;
 	font-weight: bold;
-	margin-top: 80px;
+	margin-top: 60px;
 	margin-bottom: 100px;
 }
 
@@ -74,6 +74,7 @@ button:hover::before {
 
 button:hover {
 	color: #0c0e20;
+	cursor: pointer;
 }
 
 label {
@@ -112,7 +113,8 @@ input:focus {
 }
 
 #applyBTN {
-	float: right;
+	position: relative;
+	right: calc(-100% + 160px);
 	margin: 0;
 }
 
