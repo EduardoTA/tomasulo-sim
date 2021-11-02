@@ -86,8 +86,52 @@ class IssueUnit {
                     this.rs = rs
                     this.rs.inst = inst
                     this.rs.issueTime = inst.issueTime
+                    this.rs.execTime = inst.execTime
+                    this.rs.wbTime = inst.wbTime
                     this.iterate(t)  // Para o tempo ficar certo
                 }  
+            }
+        }
+    }
+}
+
+// Unidade de Writeback
+class WbUnit {
+    constructor (reservationStationFiles, regFile) {
+        this.rs = null // Reservation Station cujo writeback está sendo realizado
+        this.reservationStationFiles = reservationStationFiles // Array com referências às reservation station files
+        this.regFile = regFile // Referência ao register file
+    }
+
+    iterate = (t) => {
+        if (!this.rs) {
+            let reservationStationFile = this.reservationStationFiles.find(element => element.finishedExec.length > 0)
+            if (reservationStationFile) {
+                let rs = reservationStationFile.finishedExec.shift()
+                if (rs) {
+                    this.rs = rs
+                }
+            }
+        } else {
+            if (this.rs.finishedWb()) {
+                this.rs.inst.finishedWb = t
+                this.regFile.regs.forEach(element => {if (element.Qi === this.rs) {element.Qi = 0; element.v = this.rs.vk;}});
+                this.reservationStationFiles.forEach(element => {
+                    element.reservationStations.forEach(rs => {
+                        if (rs.qj === this.rs) {
+                            rs.qj = 0
+                            rs.vj = this.rs.vk
+                        }
+                        if (rs.qk === this.rs) {
+                            rs.qk = 0
+                            rs.vk = this.rs.vk
+                        }
+                    })
+                })
+                this.rs.clean()
+                this.rs = null
+            } else {
+                this.rs.wbTime--
             }
         }
     }

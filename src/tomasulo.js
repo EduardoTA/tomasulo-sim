@@ -4,9 +4,9 @@ let regFile = new RegisterFile (32)
 // Array de instruções a serem executadas
 let instList = [
     new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
-    new Inst({op:"slti", rd:"R3", rs1:"R2", imm:2, issueTime:1, execTime:2, wbTime:1, regFile:regFile}),
-    new Inst({op:"slt", rd:"R0", rs1:"R0", rs2:"R1", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
-    new Inst({op:"bne", rs1:"R3", rs2:"R4", imm:3, issueTime:1, execTime:4, wbTime:1, regFile:regFile})
+    new Inst({op:"add", rd:"R2", rs1:"R2", rs2:"R1", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    //new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:4, wbTime:1, regFile:regFile})
 ]
 
 // Reservation Station File é um conjunto de Reservation Stations
@@ -41,14 +41,17 @@ let loadStoreReservationStationFile = new ReservationStationFile(2, loadStoreIns
 // Unidade de Emissão de instruções
 let issueUnit = new IssueUnit (instUnit, [arithReservationStationFile, loadStoreReservationStationFile], regFile)
 
+// Unidade de Writeback
+let wbUnit = new WbUnit ([arithReservationStationFile, loadStoreReservationStationFile], regFile)
+
 let t = 0 // Tempo
 
 // Executado no carregamento da página
 window.onload = () => {
-    // TODO: let CDB = null // Mensagem no CDB
     while (t < 1000) { // TODO: Condição de parada
         issueUnit.iterate(t)
-        // TODO: arithReservationStationFile.iterate(t, CDB)
+        arithReservationStationFile.iterate(t)
+        wbUnit.iterate(t)
         // TODO: loadStoreReservationStationFile.iterate(t, CDB)
         t++
     }
