@@ -1,5 +1,5 @@
 // Objeto com array de registradores
-let regFile = new RegisterFile (32)
+let regFile = new RegisterFile (4)
 
 // Array de instruções a serem executadas
 let instList = [
@@ -55,5 +55,9 @@ window.onload = () => {
         // TODO: loadStoreReservationStationFile.iterate(t, CDB)
         t++
     }
+    console.log(instUnit)
+    console.log(arithReservationStationFile)
+    console.log(regFile)
+    console.log(wbUnit)
 }
 

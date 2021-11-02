@@ -2,7 +2,7 @@ class Register {
     constructor(name) {
         this.name = name
         this.Qi = 0
-        this.v = 0
+        this.v = 10
     }
 }
 
