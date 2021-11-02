@@ -36,10 +36,25 @@ class ReservationStation {
         }
         return false
     }
-    // finishedWb = () => {
-    //     if (wbTime <= 0) return true
-    //     return false
-    // }
+    finishedWb = () => {
+        if (this.wbTime <= 0) {
+            return true
+        }
+        return false
+    }
+    clean = () => {
+        this.inst = null
+        this.status = this.statusCodes.IDLE
+        this.op = null
+        this.vj = null
+        this.vk = null
+        this.qj = null
+        this.qk = null
+
+        this.issueTime = 0
+        this.execTime = 0
+        this.wbTime = 0
+    }
     
     // Envia a instrução inst para a Reservation Station
     putIntoRS = (regFile) => {
@@ -107,7 +122,7 @@ class ReservationStationFile {
     }
 
     // Faz um ciclo de execução das UFs ligadas a esse Reservation Station File
-    iterate = (t, CDB) => {
+    iterate = (t) => {
         if (this.finishedIssue.length > 0 && this.exec.length < this.nUfs) {
             let rs = this.finishedIssue.find(element => !element.qj && !element.qk) // Encontra a primeira reservation station da fila com todas dependências resolvidas
             if (rs) {
@@ -132,43 +147,6 @@ class ReservationStationFile {
             this.exec.forEach (element => {if (element) element.execTime--})
         }
     }
-
-    // iterar = () => {
-    //     for (let rs in this.rsWaitWB) { //TODO: Implementar espera por CDB e ordem de instruções
-    //         rs.tempoWb--;
-    //         if (rs.tempoWb < 0) {
-    //             rs.busy = false; //TODO: Reinicializar parametros restantes da RS
-    //         }
-    //     }
-
-    //     for (let rs in this.rsExecuting) {
-    //         rs.tempoExec--;
-    //         if (rs.tempoExec < 0) this.rsWaitWB.push(rs);
-    //     }
-    //     this.rsExecuting = this.rsExecuting.filter(rs => rs.tempoExec >= 0);
-
-    //     while (this.rsExecuting.length < this.nUfs) {
-    //         if (this.rsQueue[0] && this.rsQueue[0].tempoIssue === 0) {
-    //             let rs = this.rsQueue.shift();
-    //             this.rsExecuting.push(rs);
-    //         } else break;
-    //     }
-
-    //     for (let rs in this.rsIssue) {
-    //         rs.tempoIssue--;
-    //     }
-    //     this.rsIssue = this.rsIssue.filter(rs => rs.tempoIssue >= 0);
-    // }
-
-    // issue = (inst) => {
-    //     let rsIndex = this.availableRS();
-    //     if (rsIndex === null) return false; // Não há Reservation Stations disponíveis
-    //     this.rsQueue.push(rsIndex);
-    //     this.reservationStations[rsIndex].inst = inst;
-    //     this.reservationStations[rsIndex].busy = true;
-    //     //TODO: atualiza variáveis da RS
-    //     this.rsIssue.push(this.reservationStations[rsIndex]);
-    // }
 }
 
 class MemReservationStationFile extends ReservationStationFile {
