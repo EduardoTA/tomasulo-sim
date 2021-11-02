@@ -88,7 +88,7 @@ textarea {
 	font-family: "Roboto", monospace;
 	font-size: 1.25em;
 	display: block;
-	width: calc(460px - 1em);
+	width: calc(456px - 1em);
 	height: 280px;
 	padding: 0.5em;
 	background: #0c0e20;
