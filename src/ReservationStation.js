@@ -136,8 +136,11 @@ class ReservationStationFile {
                 this.finishedExec.push(rs)
                 rs.status = "awaiting writeback"
                 rs.inst.finishedExec = t
-
-                rs.vk = rs.vj + rs.vk
+                switch (rs.inst.op) {
+                    case "add": case "addi":
+                        rs.vk = rs.vj + rs.vk
+                    // TODO: implementar as outras operações
+                }
                 rs.qj = 0
                 rs.qk = 0
 
