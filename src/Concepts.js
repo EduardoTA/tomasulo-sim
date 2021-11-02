@@ -86,6 +86,8 @@ class IssueUnit {
                     this.rs = rs
                     this.rs.inst = inst
                     this.rs.issueTime = inst.issueTime
+                    this.rs.execTime = inst.execTime
+                    this.rs.wbTime = inst.wbTime
                     this.iterate(t)  // Para o tempo ficar certo
                 }  
             }
