@@ -62,16 +62,16 @@ class ReservationStation {
             
             this.qj = this.inst.rs1.Qi
             if (!this.qj)
-                this.vj = this.inst.rs1.v
+                this.vj = this.inst.rs1.getValue()
             this.vk = this.inst.imm
             this.inst.rd.Qi = this
         } else if (["add", "sub", "sll", "slt", "sltu", "xor", "srl", "sra", "or", "and"].includes(this.inst.op)) {
             this.qj = this.inst.rs1.Qi
             if (!this.qj)
-                this.vj = this.inst.rs1.v
+                this.vj = this.inst.rs1.getValue()
             this.qk = this.inst.rs2.Qi
             if (!this.qk)
-                this.vk = this.inst.rs2.v
+                this.vk = this.inst.rs2.getValue()
             this.inst.rd.Qi = this
         }
     }
