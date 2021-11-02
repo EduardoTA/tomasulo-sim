@@ -2,10 +2,10 @@ let regFile = new RegisterFile (32)
 
 let instList = [
     // (op, rd, rs1, rs2, imm, issueTime, execTime, wbTime)
-    new Inst("add", "R0", "R1", "R2", undefined, 1, 3, 1, regFile),
-    new Inst("slti", "R3", "R2", undefined, 2, 1, 2, 1, regFile),
-    new Inst("slt", "R4", "R0", "R1", undefined, 1, 3, 1, regFile),
-    new Inst("bne", undefined, "R3", "R4", 3, 1, 4, 1, regFile)
+    new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    new Inst({op:"slti", rd:"R3", rs1:"R2", imm:2, issueTime:1, execTime:2, wbTime:1, regFile:regFile}),
+    new Inst({op:"slt", rd:"R4", rs1:"R0", rs2:"R1", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    new Inst({op:"bne", rs1:"R3", rs2:"R4", imm:3, issueTime:1, execTime:4, wbTime:1, regFile:regFile})
 ]
 let arithInstList = [
     "auipc",

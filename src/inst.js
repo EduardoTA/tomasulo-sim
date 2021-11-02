@@ -1,5 +1,6 @@
 class Inst {
-    constructor (op, rd, rs1, rs2, imm, issueTime, execTime, wbTime, regFile){
+    constructor (args){
+        const {op, rd, rs1, rs2, imm, issueTime, execTime, wbTime} = args
         this.op = op // Código de operação
         this.rd = regFile.regs.find(element => element.name === rd) // Campo destino
         this.rs1 = regFile.regs.find(element => element.name === rs1) // Registrador de origem 1
@@ -9,8 +10,8 @@ class Inst {
         this.execTime = execTime
         this.wbTime = wbTime
 
-        this.finishedIssue = 0
-        this.finishedExec = 0
-        this.finishedWb = 0
+        this.finishedIssue = undefined
+        this.finishedExec = undefined
+        this.finishedWb = undefined
     }
 }
