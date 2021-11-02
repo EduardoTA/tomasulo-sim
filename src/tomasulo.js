@@ -1,10 +1,16 @@
+// Objeto com array de registradores
+let regFile = new RegisterFile (4)
+
+// Array de instruções a serem executadas
 let instList = [
-    // (op, rd, rs1, rs2, imm, issueTime, execTime, wbTime)
-    new Inst("add", "R0", "R1", "R2", undefined, 1, 3, 1),
-    new Inst("slti", "R3", "R2", undefined, 2, 1, 2, 1),
-    new Inst("slt", "R4", "R0", "R1", undefined, 1, 3, 1),
-    new Inst("bne", undefined, "R3", "R4", 3, 1, 4, 1)
+    new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    new Inst({op:"add", rd:"R2", rs1:"R2", rs2:"R1", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    //new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:4, wbTime:1, regFile:regFile})
 ]
+
+// Reservation Station File é um conjunto de Reservation Stations
+// lista de op_codes das intruções executáveis pelas UFs conectadas à arithReservationStationFile
 let arithInstList = [
     "auipc",
     "addi",
@@ -14,36 +20,44 @@ let arithInstList = [
     "slti",
     "slt",
     "bne"
+    // TODO: completar esta lista
 ]
+
+// lista de op_codes das intruções executáveis pelas UFs conectadas à loadStoreReservationStationFile
 let loadStoreInstList = [
     "lui",
     "lw"
+    // TODO: completar esta lista
 ]
 
-let regFile = new RegisterFile (32)
-
+// Unidade de instruções
 let instUnit = new InstUnit (instList)
+
+// Reservation Station File de operações aritméticas e lógicas
 let arithReservationStationFile = new ReservationStationFile(3, arithInstList, 2)
+// Reservation Station File de operações load/store
 let loadStoreReservationStationFile = new ReservationStationFile(2, loadStoreInstList, 1)
+
+// Unidade de Emissão de instruções
 let issueUnit = new IssueUnit (instUnit, [arithReservationStationFile, loadStoreReservationStationFile], regFile)
 
+// Unidade de Writeback
+let wbUnit = new WbUnit ([arithReservationStationFile, loadStoreReservationStationFile], regFile)
+
 let t = 0 // Tempo
-let i = 0 // Temporário
 
 // Executado no carregamento da página
 window.onload = () => {
-    // let CDB = null // Mensagem no CDB
-    // let readyToBeExec // Fila com as RSs prontas para entrar em execução
-    // let oldIssueRS // Reservation station sendo issued no último ciclo
-    // let IssueRS // Reservation station sendo issued ciclo atual
-
-    while (t < 1000 && i < 1000) { // TODO: Condição de parada
-        issueUnit.iterate(t) // t++
-        // oldIssueRS = IssueRS
-        // IssueRS = issueIterate(oldIssueRS, readyToBeExec)
-        // execIterate(readyToBeExec)
+    while (t < 1000) { // TODO: Condição de parada
+        issueUnit.iterate(t)
+        arithReservationStationFile.iterate(t)
+        wbUnit.iterate(t)
+        // TODO: loadStoreReservationStationFile.iterate(t, CDB)
         t++
-        i++
     }
+    console.log(instUnit)
+    console.log(arithReservationStationFile)
+    console.log(regFile)
+    console.log(wbUnit)
 }
 
