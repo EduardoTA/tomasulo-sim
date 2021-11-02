@@ -29,10 +29,13 @@ class ReservationStation {
         }
         return false
     }
-    // finishedExec = () => {
-    //     if (execTime <= 0) return true
-    //     return false
-    // }
+    finishedExec = () => {
+        if (this.execTime <= 0) {
+            this.status = this.statusCodes.AWAITING_WB
+            return true
+        }
+        return false
+    }
     // finishedWb = () => {
     //     if (wbTime <= 0) return true
     //     return false
@@ -75,25 +78,18 @@ class ReservationStationFile {
         this.ops = ops // array de strings com as operações suportadas
         this.nUfs = nUfs // Número de UFs ligadas a essas RSs
 
-        this.reservationStations = []
+        this.reservationStations = [] // Array com as reservation stations deste file dereservation stations
 
         // Se o objeto instanciado for a superclasse, então chamar método da superclasse
         if (new.target === ReservationStationFile)
             this.instanciateRSs()
+        // Se não for, então chamar instanciateRSs() da subclasse
 
-        // this.Ufs = []
-        // for (let i=0; i<nUfs; i++){
-        //     this.Ufs.push(
-        //         new Uf()
-        //     )
-        // }
 
-        this.rsQueue = [];
-        this.rsIssue = [];
-        this.rsExecuting = [];
-        this.rsWaitWB = [];
 
-        this.finishedIssue = [] // FIFO com as instruções/RSs que terminaram issue
+        this.finishedIssue = [] // FIFO com as instruções/RSs que terminaram de ser issued
+        this.exec = [] // Array com as reservation stations com instruções que estão sendo executadas no momento
+        this.finishedExec = [] // FIFO com as instruções cuja execução já terminou
     }
 
     // Instancia o número de RSs corretas
@@ -106,8 +102,35 @@ class ReservationStationFile {
     }
 
     // Insere nova RS na fila de RSs que acabaram de ser issued
-    issue = (reservationStation) => {
+    finishedIssuing = (reservationStation) => {
         this.finishedIssue.push(reservationStation)
+    }
+
+    // Faz um ciclo de execução das UFs ligadas a esse Reservation Station File
+    iterate = (t, CDB) => {
+        if (this.finishedIssue.length > 0 && this.exec.length < this.nUfs) {
+            let rs = this.finishedIssue.find(element => !element.qj && !element.qk) // Encontra a primeira reservation station da fila com todas dependências resolvidas
+            if (rs) {
+                this.finishedIssue = this.finishedIssue.filter(element => element !== rs)
+                this.exec.push(rs)
+            }
+        }
+        if (this.exec.length > 0) {
+            let rs = this.exec.find(element => element.finishedExec())
+            if (rs) {
+                this.finishedExec.push(rs)
+                rs.status = "awaiting writeback"
+                rs.inst.finishedExec = t
+
+                rs.vk = rs.vj + rs.vk
+                rs.qj = 0
+                rs.qk = 0
+
+                this.exec = this.exec.filter(element => element !== rs)
+            }
+
+            this.exec.forEach (element => {if (element) element.execTime--})
+        }
     }
 
     // iterar = () => {

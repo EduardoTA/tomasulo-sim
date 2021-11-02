@@ -45,10 +45,10 @@ let t = 0 // Tempo
 
 // Executado no carregamento da página
 window.onload = () => {
-    // TODO: let CDB = null // Mensagem no CDB
+    let CDB = null // Mensagem no CDB
     while (t < 1000) { // TODO: Condição de parada
         issueUnit.iterate(t)
-        // TODO: arithReservationStationFile.iterate(t, CDB)
+        arithReservationStationFile.iterate(t, CDB)
         // TODO: loadStoreReservationStationFile.iterate(t, CDB)
         t++
     }
