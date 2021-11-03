@@ -115,7 +115,7 @@ class WbUnit {
         } else {
             if (this.rs.finishedWb()) {
                 this.rs.inst.finishedWb = t
-                this.regFile.regs.forEach(element => {if (element.Qi === this.rs) {element.Qi = 0; element.setValue(this.rs.vk);}});
+                this.regFile.regs.forEach(element => {if (element.getQi() === this.rs) {element.setQi(0); element.setValue(this.rs.vk);}});
                 this.reservationStationFiles.forEach(element => {
                     element.reservationStations.forEach(rs => {
                         if (rs.qj === this.rs) {

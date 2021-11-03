@@ -61,19 +61,19 @@ class ReservationStation {
         if ("lui" === this.inst.op) {
             this.vk = this.inst.imm
         } else if (["jalr", "addi", "slti", "xori", "ori", "andi", "slli", "srli"].includes(this.inst.op)) {
-            this.qj = this.inst.rs1.Qi
+            this.qj = this.inst.rs1.getQi()
             if (!this.qj)
                 this.vj = this.inst.rs1.getValue()
             this.vk = this.inst.imm
         } else if (["beq", "bne", "blt", "bge", "bltu", "bgeu", "add", "sub", "sll", "slt", "sltu", "xor", "srl", "sra", "or", "and"].includes(this.inst.op)) {
-            this.qj = this.inst.rs1.Qi
+            this.qj = this.inst.rs1.getQi()
             if (!this.qj)
                 this.vj = this.inst.rs1.getValue()
-            this.qk = this.inst.rs2.Qi
+            this.qk = this.inst.rs2.getQi()
             if (!this.qk)
                 this.vk = this.inst.rs2.getValue()
         }
-        this.inst.rd.Qi = this
+        this.inst.rd.setQi(this)
     }
 }
 
@@ -84,16 +84,16 @@ class MemReservationStation extends ReservationStation {
     }
     putIntoRS = (regFile) => {
         if (["lb", "lh", "lw", "lbu", "lhu"].includes(this.inst.op)) {
-            this.qj = this.inst.rs1.Qi
+            this.qj = this.inst.rs1.getQi()
             if (!this.qj)
                 this.vj = this.inst.rs1.getValue()
             this.address = this.inst.imm
-            this.inst.rd.Qi = this
+            this.inst.rd.setQi(this)
         } else if (["sb", "sh", "sw"].includes(this.inst.op)) {
-            this.qj = this.inst.rs1.Qi
+            this.qj = this.inst.rs1.getQi()
             if (!this.qj)
                 this.vj = this.inst.rs1.getValue()
-            this.qk = this.inst.rs2.Qi
+            this.qk = this.inst.rs2.getQi()
             if (!this.qk)
                 this.vk = this.inst.rs2.getValue()
             this.address = this.inst.imm

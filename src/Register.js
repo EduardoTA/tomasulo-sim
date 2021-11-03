@@ -2,7 +2,19 @@ class Register {
     constructor(name) {
         this.name = name
         this.Qi = 0
-        this.v = 10
+        this.v = 0
+    }
+    getQi = () => {
+        if (this.name === "R0")
+            return 0
+        else
+            return this.Qi
+    }
+    setQi = (Qi) => {
+        if (this.name === "R0")
+            this.Qi = 0
+        else
+            this.Qi = Qi
     }
     getValue = () => {
         if (this.name === "R0")
