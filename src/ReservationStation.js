@@ -58,22 +58,22 @@ class ReservationStation {
     
     // Envia a instrução inst para a Reservation Station
     putIntoRS = (regFile) => {
-        if (["addi", "slti", "sltiu", "xori", "ori", "andi", "slli", "srli", "srai"].includes(this.inst.op)) {
-            
+        if ("lui" === this.inst.op) {
+            this.vk = this.inst.imm
+        } else if (["jalr", "addi", "slti", "xori", "ori", "andi", "slli", "srli"].includes(this.inst.op)) {
             this.qj = this.inst.rs1.Qi
             if (!this.qj)
                 this.vj = this.inst.rs1.getValue()
             this.vk = this.inst.imm
-            this.inst.rd.Qi = this
-        } else if (["add", "sub", "sll", "slt", "sltu", "xor", "srl", "sra", "or", "and"].includes(this.inst.op)) {
+        } else if (["beq", "bne", "blt", "bge", "bltu", "bgeu", "add", "sub", "sll", "slt", "sltu", "xor", "srl", "sra", "or", "and"].includes(this.inst.op)) {
             this.qj = this.inst.rs1.Qi
             if (!this.qj)
                 this.vj = this.inst.rs1.getValue()
             this.qk = this.inst.rs2.Qi
             if (!this.qk)
                 this.vk = this.inst.rs2.getValue()
-            this.inst.rd.Qi = this
         }
+        this.inst.rd.Qi = this
     }
 }
 
