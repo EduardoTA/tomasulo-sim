@@ -3,9 +3,9 @@ let regFile = new RegisterFile (4)
 
 // Array de instruções a serem executadas
 let instList = [
-    new Inst({op:"addi",rd:"R1",rs1:"R0",imm:3})
-    //new Inst({op:"sb", rs2:"R1", rs1:"R0", imm:0, issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
-    //new Inst({op:"lb", rd:"R3", rs1:"R0", imm:0, issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
+    new Inst({op:"addi",rd:"R1",rs1:"R0",imm:3, regFile:regFile}),
+    new Inst({op:"sb", rs2:"R1", rs1:"R0", imm:0, regFile:regFile}),
+    new Inst({op:"lb", rd:"R3", rs1:"R0", imm:0,  regFile:regFile}),
     //new Inst({op:"xori", rd:"R2", rs1:"R1", imm:543, issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
     //new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:3, wbTime:1, regFile:regFile}),
     //new Inst({op:"add", rd:"R0", rs1:"R1", rs2:"R2", issueTime:1, execTime:4, wbTime:1, regFile:regFile})
@@ -82,5 +82,7 @@ window.onload = () => {
     console.log(loadStoreReservationStationFile)
     console.log(regFile)
     console.log(wbUnit)
+
+    console.table(instList, ["op", "finishedIssueAt", "finishedExecAt", "finishedWbAt"])
 }
 

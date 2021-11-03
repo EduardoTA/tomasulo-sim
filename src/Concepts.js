@@ -3,7 +3,7 @@
 // Guarda array com instruções que já foram emitidas
 class InstUnit {
     constructor (instFIFO) {
-        this.instFIFO = instFIFO // Fila com intruções a serem emitidas
+        this.instFIFO = [...instFIFO] // Fila com intruções a serem emitidas
         this.instFIFOFetched = [] // Fila com instruções já emitidas
     }
     // Retorna a 1ª instrução da fila
