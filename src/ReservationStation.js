@@ -137,8 +137,36 @@ class ReservationStationFile {
                 rs.status = "awaiting writeback"
                 rs.inst.finishedExec = t
                 switch (rs.inst.op) {
+                    case "lui":
+                        rs.vk = rs.vk
+                        break
+                    case "slti": case "slt":
+                        if (rs.vk > rs.vj)
+                            rs.vk = 1
+                        else
+                            rs.vk = 0
+                        break
+                    case "xori": case "xor":
+                        rs.vk = rs.vj ^ rs.vk
+                        break
+                    case "ori": case "or":
+                        rs.vk = rs.vj | rs.vk
+                        break
+                    case "andi": case "and":
+                        rs.vk = rs.vj & rs.vk
+                        break
                     case "add": case "addi":
                         rs.vk = rs.vj + rs.vk
+                        break
+                    case "slli": case "sll":
+                        rs.vk = rs.vj << rs.vk
+                        break
+                    case "srli": case "srl":
+                        rs.vk = rs.vj >> rs.vk
+                        break
+                    case "sub":
+                        rs.vk = rs.vj - rs.vk
+                        break
                     // TODO: implementar as outras operações
                 }
                 rs.qj = 0
