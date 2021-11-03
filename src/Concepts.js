@@ -110,6 +110,7 @@ class WbUnit {
                 let rs = reservationStationFile.finishedExec.shift()
                 if (rs) {
                     this.rs = rs
+                    this.iterate(t)
                 }
             }
         } else {
