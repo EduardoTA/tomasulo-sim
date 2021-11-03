@@ -23,8 +23,8 @@ class Inst {
         else
             this.wbTime = wbTime // Latência de emissão  
 
-        this.finishedIssue = undefined // Contador de ciclos de clock usados para emitir instrução
-        this.finishedExec = undefined // Contador de ciclos de clock usados para executar instrução
-        this.finishedWb = undefined // Contador de ciclos de clock usados para dar writeback na instrução
+        this.finishedIssueAt = undefined // Contador de ciclos de clock usados para emitir instrução
+        this.finishedExecAt = undefined // Contador de ciclos de clock usados para executar instrução
+        this.finishedWbAt = undefined // Contador de ciclos de clock usados para dar writeback na instrução
     }
 }

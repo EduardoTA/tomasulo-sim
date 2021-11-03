@@ -57,7 +57,7 @@ class IssueUnit {
             if (this.rs.finishedIssue()) {
                 // Se terminou
                 this.rs.reservationStationFile.finishedIssuing(this.rs) // Notifica para a reservation station que terminou a emissão
-                this.rs.inst.finishedIssue = t // Registra na instrução o tempo que houve terminou emissão
+                this.rs.inst.finishedIssueAt = t // Registra na instrução o tempo que houve terminou emissão
                 this.rs.putIntoRS (this.regFile) // Commita instrução na reservation station
 
                 // Agora que a instrução foi emitida, pode-se trabalhar sobre uma nova reservation station
@@ -114,7 +114,7 @@ class WbUnit {
             }
         } else {
             if (this.rs.finishedWb()) {
-                this.rs.inst.finishedWb = t
+                this.rs.inst.finishedWbAt = t
                 this.regFile.regs.forEach(element => {if (element.getQi() === this.rs) {element.setQi(0); element.setValue(this.rs.vk);}});
                 this.reservationStationFiles.forEach(element => {
                     element.reservationStations.forEach(rs => {

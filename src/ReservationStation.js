@@ -149,7 +149,7 @@ class ReservationStationFile {
             if (rs) {
                 this.finishedExec.push(rs)
                 rs.status = "awaiting writeback"
-                rs.inst.finishedExec = t
+                rs.inst.finishedExecAt = t
                 switch (rs.inst.op) {
                     case "lui":
                         rs.vk = rs.vk
@@ -224,7 +224,7 @@ class MemReservationStationFile extends ReservationStationFile {
             if (rs.finishedExec()) {
                 this.finishedExec.push(rs)
                 rs.status = "awaiting writeback"
-                rs.inst.finishedExec = t
+                rs.inst.finishedExecAt = t
                 switch (rs.inst.op) {
                     case "lb":
                         rs.vk = memUnit.load(rs.address)
