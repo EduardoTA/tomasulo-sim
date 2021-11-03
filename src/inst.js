@@ -7,9 +7,21 @@ class Inst {
         this.rs1 = regFile.regs.find(element => element.name === rs1) // Registrador de origem 1
         this.rs2 = regFile.regs.find(element => element.name === rs2) // Registrador de origem 2
         this.imm = imm // Campo Immediate
-        this.issueTime = issueTime // Latência de emissão
-        this.execTime = execTime // Latência de execução
-        this.wbTime = wbTime // Latência de writeback
+
+        if (issueTime === undefined)
+            this.issueTime = 1 // Latência de emissão padrão
+        else
+            this.issueTime = issueTime // Latência de emissão
+        
+        if (execTime === undefined)
+            this.execTime = 1 // Latência de emissão padrão
+        else
+            this.execTime = execTime // Latência de emissão
+        
+        if (wbTime === undefined)
+            this.wbTime = 1 // Latência de emissão padrão
+        else
+            this.wbTime = wbTime // Latência de emissão  
 
         this.finishedIssue = undefined // Contador de ciclos de clock usados para emitir instrução
         this.finishedExec = undefined // Contador de ciclos de clock usados para executar instrução
