@@ -83,7 +83,21 @@ class MemReservationStation extends ReservationStation {
         this.address;
     }
     putIntoRS = (regFile) => {
-        // TODO: Implementar este método para este tipo de classe
+        if (["lb", "lh", "lw", "lbu", "lhu"].includes(this.inst.op)) {
+            this.qj = this.inst.rs1.Qi
+            if (!this.qj)
+                this.vj = this.inst.rs1.getValue()
+            this.address = this.inst.imm
+            this.inst.rd.Qi = this
+        } else if (["sb", "sh", "sw"].includes(this.inst.op)) {
+            this.qj = this.inst.rs1.Qi
+            if (!this.qj)
+                this.vj = this.inst.rs1.getValue()
+            this.qk = this.inst.rs2.Qi
+            if (!this.qk)
+                this.vk = this.inst.rs2.getValue()
+            this.address = this.inst.imm
+        }
     }
 }
 
@@ -181,9 +195,11 @@ class ReservationStationFile {
 }
 
 class MemReservationStationFile extends ReservationStationFile {
-    constructor(nRSs, ops, regFile) {
-        super(nRSs, ops, 1, regFile) // Número de UFs obrigatoriamente 1
+    constructor(nRSs, ops) {
+        super(nRSs, ops, 1) // Número de UFs obrigatoriamente 1
         this.instanciateRSs()
+
+        this.exec = null
     }
 
     instanciateRSs = () => {
@@ -191,6 +207,38 @@ class MemReservationStationFile extends ReservationStationFile {
             this.reservationStations.push(
                 new MemReservationStation(this)
             )
+        }
+    }
+
+    iterate = (t, memUnit) => {
+        if (this.finishedIssue.length > 0 && !this.exec) {
+            let rs = this.finishedIssue[0]
+            if (!rs.qj && !rs.qk){
+                rs.address = rs.vj + rs.address // Cálculo de endereço efetivo
+                this.finishedIssue = this.finishedIssue.filter(element => element !== rs)
+                this.exec = rs
+            }
+        }
+        if (this.exec) {
+            let rs = this.exec
+            if (rs.finishedExec()) {
+                this.finishedExec.push(rs)
+                rs.status = "awaiting writeback"
+                rs.inst.finishedExec = t
+                switch (rs.inst.op) {
+                    case "lb":
+                        rs.vk = memUnit.load(rs.address)
+                        break
+                    case "sb":
+                        memUnit.store(rs.address, rs.vk)
+                        break
+                }
+                rs.qj = 0
+                rs.qk = 0
+
+                this.exec = null
+            } else
+                this.exec.execTime--
         }
     }
 }

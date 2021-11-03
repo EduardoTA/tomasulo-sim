@@ -54,13 +54,16 @@ let instUnit = new InstUnit (instList)
 // Reservation Station File de operações aritméticas e lógicas
 let arithReservationStationFile = new ReservationStationFile(3, arithInstList, 2)
 // Reservation Station File de operações load/store
-let loadStoreReservationStationFile = new ReservationStationFile(2, loadStoreInstList, 1)
+let loadStoreReservationStationFile = new MemReservationStationFile(2, loadStoreInstList)
 
 // Unidade de Emissão de instruções
 let issueUnit = new IssueUnit (instUnit, [arithReservationStationFile, loadStoreReservationStationFile], regFile)
 
 // Unidade de Writeback
 let wbUnit = new WbUnit ([arithReservationStationFile, loadStoreReservationStationFile], regFile)
+
+// Unidade de Memória
+let memUnit = new MemUnit (1000)
 
 let t = 0 // Tempo
 
@@ -69,12 +72,14 @@ window.onload = () => {
     while (t < 1000) { // TODO: Condição de parada
         issueUnit.iterate(t)
         arithReservationStationFile.iterate(t)
+        loadStoreReservationStationFile.iterate(t,memUnit)
         wbUnit.iterate(t)
         // TODO: loadStoreReservationStationFile.iterate(t, CDB)
         t++
     }
     console.log(instUnit)
     console.log(arithReservationStationFile)
+    console.log(loadStoreReservationStationFile)
     console.log(regFile)
     console.log(wbUnit)
 }
